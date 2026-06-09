@@ -12,11 +12,11 @@ export default function Players() {
       <p className="sub">8 teams each, drawn via tiered snake draft. Tap a team to see exactly where its points came from.</p>
 
       {players.map((p) => (
-        <div key={p.name} style={{ marginTop: 22 }}>
-          <h2 style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-            <span>{p.name}</span>
-            <span className="tag acc">{p.points} pts · £{p.payout.toFixed(2)}</span>
-          </h2>
+        <div key={p.name} style={{ marginTop: 24 }}>
+          <div className="lb-row" style={{ gridTemplateColumns: "1fr auto", marginBottom: 10 }}>
+            <span className="lb-name">{p.name}</span>
+            <span className="tag acc" style={{ fontSize: 13 }}>{p.points} pts · £{p.payout.toFixed(2)}</span>
+          </div>
           {p.teams.map((t) => (
             <details key={t.name}>
               <summary>

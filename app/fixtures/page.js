@@ -1,7 +1,7 @@
 "use client";
 import { useScoring } from "../../lib/useScoring";
 import { TEAMS } from "../../lib/data";
-import { canon, prettyStage, explainMatch } from "../../lib/scoring";
+import { canon, prettyStage, explainMatch, matchSummary } from "../../lib/scoring";
 
 const STAGE_ORDER = ["GROUP_STAGE", "LAST_32", "LAST_16", "QUARTER_FINALS", "SEMI_FINALS", "THIRD_PLACE", "FINAL"];
 const fmt = (d) => new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
@@ -31,6 +31,7 @@ function SideBreakdown({ side }) {
 
 function Score({ m, done, live }) {
   const ex = done ? explainMatch(m) : null;
+  const sum = done ? matchSummary(m) : null;
   return (
     <div className={`scorewrap ${done || live ? "" : "sched"}`} tabIndex={ex ? 0 : -1}>
       <div className={`score ${done || live ? "" : "sched"}`}>
@@ -39,7 +40,13 @@ function Score({ m, done, live }) {
       </div>
       {ex && (
         <div className="tip" role="tooltip">
-          <div className="tip-h">Match points · {prettyStage(ex.stage)}{ex.factor > 1 ? ` · upset bonuses ×${ex.factor}` : ""}</div>
+          {sum && (
+            <div className="tip-summary">
+              <span className="em">{sum.emoji}</span>
+              <span><span className="sh">{sum.headline}</span><span className="fl"> {sum.flavour}</span></span>
+            </div>
+          )}
+          <div className="tip-h">How the points broke down · {prettyStage(ex.stage)}{ex.factor > 1 ? ` · upset bonuses ×${ex.factor}` : ""}</div>
           <SideBreakdown side={ex.home} />
           <SideBreakdown side={ex.away} />
           <div className="tip-foot">Plus per-team “going deep” &amp; trophy points — see the Players page.</div>
